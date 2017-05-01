@@ -107,3 +107,26 @@ void ShakerSort(int *A, int n){
     }while(L<R);
 }
 */
+int FirstSt1(char *st1, char *st2){//выводит 1 если 1ая раньше должна стоять и 0 если 2ая раньше
+    int i;
+    for(i=0;st1[i]!='\0' && st2[i]!='\0'; i++){
+        if(st1[i]==st2[i]) {
+            continue;
+        }
+        else{
+            if(st1[i]<st2[i]) {
+                return 1;//надо продолжать в вызывающец функции
+            }
+            else{
+                return 0;//st2 раньше должна быть те надо записывать
+            }
+        }
+    }
+    if(st1[i]=='\0' && st2[i]=='\0') return 0;
+    if(st1[i]!='\0' && st2[i]=='\0'){
+        return 0;//st2 короче и надо записывать
+    }
+    else{
+        return 1;
+    }
+}
