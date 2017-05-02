@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+void FillInc(int, int *);
+void FillDec(int, int *);
+void FillRand(int, int *);
+long long int CheckSum(const int *, int);
+int RunNumber(int *, int);
+void PrintMas(int *, int);
+void HeapSort(int A[], int n);
+void HeapBuilder(int A[], int n, int L);
 
 //программа сортировки массива целых чисел Heapsort
 int main(){
@@ -10,10 +18,7 @@ int main(){
     srand(time(NULL));
     printf("\nВведите размер массива: ");
     scanf("%d", &n);
-//    printf("v\n");
     int *A = (int *)malloc(n*sizeof(int));
-//    FillInc(n,A);
-//    PrintMas(A,n);
 // Сортировка случайного массива 
     move=0;
     compare=0;
@@ -139,5 +144,31 @@ void FillDec(int n, int *A){
         temp=A[i];
         A[i]=A[max];
         A[max]=temp;
+    }
+}
+
+long long int CheckSum(const int *arr, int n){
+    int i;
+    long long int sum=0;
+    for(i=0;i<n;i++){
+        sum+=arr[i];
+    }
+    return sum;
+}
+
+int RunNumber(int *a, int n){
+    int i, count=1;
+    for(i=0;i<n-1;i++){
+	if(a[i]>a[i+1]){
+	    count++;
+	}
+    }
+    return count;
+}
+
+void PrintMas(int *a, int n){
+    int i;
+    for(i=0;i<n;i++){
+	printf("%d ",a[i]);
     }
 }
