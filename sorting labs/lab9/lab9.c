@@ -8,8 +8,8 @@ void FillRand(int, int *);
 long long int CheckSum(const int *, int);
 int RunNumber(int *, int);
 void PrintMas(int *, int);
-void HeapSort(int A[], int n);
-void HeapBuilder(int A[], int n, int L);
+void HeapSort(int A[], int n, int *move, int *compare);
+void HeapBuilder(int A[], int n, int L, int *move, int *compare);
 
 //программа сортировки массива целых чисел Heapsort
 int main(){
@@ -19,16 +19,16 @@ int main(){
     printf("\nВведите размер массива: ");
     scanf("%d", &n);
     int *A = (int *)malloc(n*sizeof(int));
-// Сортировка случайного массива 
+// Сортировка случайного массива
     move=0;
     compare=0;
-    printf("\n\nСортировка shaker rand\n");
+    printf("\n\nСортировка heap rand\n");
     FillRand(n,A);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
     printf("\nCheckSum: %Ld\n", CheckSum(A,n));
-    ShakerSort(A,n,&compare,&move);
+    HeapSort(A,n,&compare,&move);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
@@ -39,13 +39,13 @@ int main(){
 // Сортировка возрастающего массива
     move=0;
     compare=0;
-    printf("\n\nСортировка shaker возрастающего массива\n");
+    printf("\n\nСортировка heap возрастающего массива\n");
     FillInc(n,A);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
     printf("\nCheckSum: %Ld\n", CheckSum(A,n));
-    ShakerSort(A,n,&compare,&move);
+    HeapSort(A,n,&compare,&move);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
@@ -56,13 +56,13 @@ int main(){
 // Сортировка убывающего массива
     move=0;
     compare=0;
-    printf("\n\nСортировка shaker убывающего массива\n");
+    printf("\n\nСортировка heap убывающего массива\n");
     FillDec(n,A);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
     printf("\nCheckSum: %Ld\n", CheckSum(A,n));
-    ShakerSort(A,n,&compare,&move);
+    HeapSort(A,n,&compare,&move);
 
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
@@ -73,32 +73,38 @@ int main(){
     return 0;
 }
 
-void HeapBuilder(int A[], int n, int L){
+void HeapBuilder(int A[], int n, int L, int *move, int *compare){
     int x=A[L-1], i=L, j;
+    *move++;
     while(1){
         j=2*i;//тут логика алгоритма номера алгоритма
         if(j>n) return;
+        *compare++;
         if((j<n)&&A[j]<=A[j-1]) j=j+1;
+        *compare++;
         if(x<=A[j-1]) return;
+        *move++;
         A[i-1]=A[j-1];
-        i=j;        
+        i=j;
     }
+    *move++;
     A[i-1]=x;
 }
 
-void HeapSort(int A[], int n){
+void HeapSort(int A[], int n, int *move, int *compare){
     int L=n/2;
     while(L>0){
-        HeapBuilder(A[],n,L);
+        HeapBuilder(A, n, L, move, compare);
         L--;
     }
-    int R=n, temp;
-    while(R>1){
+    int temp;
+    while(n>1){
+        *move++;
         temp=A[0];
-        A[0]=A[R-1];
-        A[R-1]=temp;
-        R--;
-        HeapBuilder(A[],n,R);
+        A[0]=A[n-1];
+        A[n-1]=temp;
+        n--;
+        HeapBuilder(A,n,1, move, compare);
     }
 }
 
@@ -108,7 +114,7 @@ void FillRand(int a, int * A){
         A[i]=(rand()%201-100);
     }
 /*    for(i=0;i<a;i++){
-	printf("%d ",A[i]);//проверка
+    printf("%d ",A[i]);//проверка
     }*/
 }
 
@@ -121,7 +127,7 @@ void FillInc(int n, int *A){
         for(k=i+1;k<n;k++){
             if(A[k]<A[min]){
             min=k;
-            }		
+            }
         }
         temp=A[i];
         A[i]=A[min];
@@ -139,7 +145,7 @@ void FillDec(int n, int *A){
         for(k=i+1;k<n;k++){
             if(A[k]>A[max]){
             max=k;
-            }		
+            }
         }
         temp=A[i];
         A[i]=A[max];
@@ -159,9 +165,9 @@ long long int CheckSum(const int *arr, int n){
 int RunNumber(int *a, int n){
     int i, count=1;
     for(i=0;i<n-1;i++){
-	if(a[i]>a[i+1]){
-	    count++;
-	}
+    if(a[i]>a[i+1]){
+        count++;
+    }
     }
     return count;
 }
@@ -169,6 +175,6 @@ int RunNumber(int *a, int n){
 void PrintMas(int *a, int n){
     int i;
     for(i=0;i<n;i++){
-	printf("%d ",a[i]);
+    printf("%d ",a[i]);
     }
 }
