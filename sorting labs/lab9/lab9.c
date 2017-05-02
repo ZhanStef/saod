@@ -75,19 +75,19 @@ int main(){
 
 void HeapBuilder(int A[], int n, int L, int *move, int *compare){
     int x=A[L-1], i=L, j;
-    *move++;
+    (*move)++;
     while(1){
         j=2*i;//тут логика алгоритма номера алгоритма
         if(j>n) return;
-        *compare++;
+        (*compare)++;
         if((j<n)&&A[j]<=A[j-1]) j=j+1;
-        *compare++;
+        (*compare)++;
         if(x<=A[j-1]) return;
-        *move++;
+        (*move)++;
         A[i-1]=A[j-1];
         i=j;
     }
-    *move++;
+    (*move)++;
     A[i-1]=x;
 }
 
@@ -99,7 +99,7 @@ void HeapSort(int A[], int n, int *move, int *compare){
     }
     int temp;
     while(n>1){
-        *move++;
+        (*move)++;
         temp=A[0];
         A[0]=A[n-1];
         A[n-1]=temp;
