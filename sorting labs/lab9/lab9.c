@@ -77,18 +77,22 @@ void HeapBuilder(int A[], int n, int L, int *move, int *compare){
     int x=A[L-1], i=L, j;
     (*move)++;
     while(1){
-        j=2*i;//тут логика алгоритма номера алгоритма
-        if(j>n) return;
+        j=2*i;//тут логика алгоритма номера алгоритма, а номера массива получаюся с -1
+        if(j>n) break;
         (*compare)++;
-        if((j<n)&&A[j]<=A[j-1]) j=j+1;
+        if((j<n) && A[j]<=A[j-1]) j=j+1;
         (*compare)++;
-        if(x<=A[j-1]) return;
+        //printf(" j=j+1=%d",j);
+        if(x<=A[j-1]) break;
         (*move)++;
         A[i-1]=A[j-1];
         i=j;
     }
     (*move)++;
     A[i-1]=x;
+    //printf("\n Вывод массива");
+    //PrintMas(A,n);
+    //getchar();
 }
 
 void HeapSort(int A[], int n, int *move, int *compare){
@@ -99,7 +103,7 @@ void HeapSort(int A[], int n, int *move, int *compare){
     }
     int temp;
     while(n>1){
-        (*move)++;
+        (*move)+=3;
         temp=A[0];
         A[0]=A[n-1];
         A[n-1]=temp;
