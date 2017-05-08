@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define N 4
+#define N 6
 #define Len 30
 
 typedef struct spravochnick{
@@ -10,25 +10,32 @@ typedef struct spravochnick{
 	int tel;
 } spr;
 
-void vivod(spr *a, int n);
+int FirstSt1(char *st1, char *st2);
+void vivod(spr **a, int n);
 void Indexing(spr *isx, spr **index, int n);
 void SortbyFam(spr **A, int n);
 void SortbyName(spr **A, int n);
 
 int main(){
 	spr spis[N]={
-		{"Юн","Ын","Инович",8913001},
-		{"Ким","Пак","Ынович",8913002},
-		{"Стефанович","Жан","Андреевич",8913003},
-		{"Cтефанович","Пак","Кимовна",8913004}
+		{"buЮн","Ын","Инович",8913001},
+		{"kКим","Пак","Ынович",8913002},
+		{"zsСтефанович","Жан","Андреевич",8913003},
+		{"asCтефанович","Пак","Кимовна",8913004},
+		{"zaЯкубович","Леонид","Сергеевич",8913005},
+		{"gГапонович","Миша","Алексеевич",8913006}
 	};
-    vivod(spis, N);
+//    vivod(spis, N);
     
     spr **index1=(spr**)malloc(sizeof(spr*)*N);
     Indexing(spis, index1, N);
+    printf("\nIndexing check");
+    vivod(index1, N);
+    printf("\nIndexing checked");
+    
     SortbyFam(index1, N);
-    vivod(index1[0], N);
- /*
+    vivod(index1, N);
+	/*
     spr **index2=(spr**)malloc(sizeof(spr*)*N);
     Indexing(spis, index2, N);
     vivod(spis, N);
@@ -36,16 +43,16 @@ int main(){
     return 0;
 }
 
-void vivod(spr *a, int n){
+void vivod(spr **a, int n){
 	int i;
 	printf("\n");
-	for(i=0; i<n; i++ ,a++){
-		printf("\n№%d Фамилия:%s, Имя: %s, Отечество: %s, Тел: %d",i+1,a->fam,a->name,a->otech,a->tel);
+	for(i=0; i<n; i++){
+		printf("\n№%d Фамилия:%s, Имя: %s, Отечество: %s, Тел: %d",i+1, a[i]->fam, a[i]->name, a[i]->otech, a[i]->tel);
 	}
 }
 
 void Indexing(spr *isx, spr **index, int n){
-	int i;
+	int i;//this f make array of pointers to spr
 	for(i=0; i<n; i++){
 		index[i]=isx++;
 	}
@@ -54,29 +61,36 @@ void Indexing(spr *isx, spr **index, int n){
 void SortbyFam(spr **A, int n){
 	//A[i]->fam
 	spr *temp;
-	int g, L=0, R=n-1, k=n, i;//k-последний обмен текущей (j),
-    for(i=0; i<Len; i++){
-		do{
-			for(g=R;g>=L+1;g--){
-				if((A[g]->fam[i])<(A[g-1]->fam[i])){
-				temp=A[g-1];
-				A[g-1]=A[g];
-				A[g]=temp;
-				k=g;
-				}
+	int g, L=0, R=n-1, k=n;//k-последний обмен текущей (j),
+	do{
+		for(g=R;g>=L+1;g--){
+			if(FirstSt1(A[g]->fam,A[g-1]->fam)){
+			temp=A[g-1];
+			A[g-1]=A[g];
+			A[g]=temp;
+			k=g;
 			}
-			L=k;
-			for(g=L;g<=R-1;g++){
-				if((A[g]->fam[i])>(A[g+1]->fam[i])){
-				temp=A[g+1];
-				A[g+1]=A[g];
-				A[g]=temp;
-				k=g;
-				}
+			vivod(A,n);
+		}
+		printf("\n Result right to left ");
+		vivod(A,n);
+		printf("\nКонец справ налево хода\n next: Left to right ");
+		L=k;
+		for(g=L;g<=(R-1);g++){
+			if(FirstSt1(A[g+1]->fam,A[g]->fam)){
+			temp=A[g+1];
+			A[g+1]=A[g];
+			A[g]=temp;
+			k=g;
 			}
-			R=k;
-		}while(L<R);
-	}
+			vivod(A,n);
+		}
+		printf("\n\n Result left to right");
+		vivod(A,n);
+		printf("\nКонец left to right \n next:Begin right to left ");
+		R=k;
+		vivod(A,n);
+	}while(L<R);
 }
 /*
 void SortbyName(spr **index, int n){
@@ -107,9 +121,10 @@ void ShakerSort(int *A, int n){
     }while(L<R);
 }
 */
-int FirstSt1(char *st1, char *st2){//выводит 1 если 1ая раньше должна стоять и 0 если 2ая раньше
+int FirstSt1(char *st1, char *st2){//выводит 1 если 1ая раньше должна стоять и 0 если 2ая раньше анало st1<st2
     int i;
-    for(i=0;st1[i]!='\0' && st2[i]!='\0'; i++){
+    for(i=0; st1[i]!='\0' && st2[i]!='\0'; i++){
+		printf("\n compare:%c < %c",st1[i],st2[i]);
         if(st1[i]==st2[i]) {
             continue;
         }
@@ -124,7 +139,7 @@ int FirstSt1(char *st1, char *st2){//выводит 1 если 1ая раньш�
     }
     if(st1[i]=='\0' && st2[i]=='\0') return 0;
     if(st1[i]!='\0' && st2[i]=='\0'){
-        return 0;//st2 короче и надо записывать
+        return 0;//st2 короче и надо записывать раньше st1
     }
     else{
         return 1;
