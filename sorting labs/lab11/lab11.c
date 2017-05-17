@@ -7,25 +7,24 @@ void FillInc(int, int *);
 void FillDec(int, int *);
 void FillRand(int, int *);
 void PrintMas(int *, int);
-long long int CheckSum(const int *, int);
+long int CheckSum(const int *, int);
 int RunNumber(int *, int);
-void PrintSpis(el *);
+
 
 typedef struct elements_of_list{
-	struct queue * next;
-	int data; 
+    struct elements_of_list * next;
+    int data;
 }  el;
 
 typedef struct queue{
-	el *head;
-	el *tail;
+    el *head;
+    el *tail;
 } que;
 
-
+void PrintSpis(el *);
 
 int main(){
-	int n;
-    int move=0, compare=0;
+    int n;
     srand(time(NULL));
     printf("\nВведите размер последовательности: ");
     scanf("%d", &n);
@@ -34,21 +33,21 @@ int main(){
     FillRand(n,A);
     PrintMas(A,n);
     printf("\nСерий: %d", RunNumber(A,n));
-    printf("\nCheckSum: %Ld\n", CheckSum(A,n));
+    printf("\nCheckSum: %ld\n", CheckSum(A,n));
 //zapisb v spisok
-	int i;
-	el *p=(el *)malloc(sizeof(el)), *head_list=p, *new;
-	p->data=A[0];
-	p->next=NULL;
-	for(i=1; i<n; i++){
-		new=(el *)malloc(sizeof(el));
-		new->next=p->next;
-		p->next=new;
-		p=new;
-		p->data=A[i];
-	}
-	PrintSpis(head_list);
-	return 0;
+    int i;
+    el *p=(el *)malloc(sizeof(el)), *head_list=p, *new;
+    p->data=A[0];
+    p->next=NULL;
+    for(i=1; i<n; i++){
+        new=(el *)malloc(sizeof(el));
+        new->next=p->next;
+        p->next=new;
+        p=new;
+        p->data=A[i];
+    }
+    PrintSpis(head_list);
+    return 0;
 }
 
 void PrintMas(int *a, int n){
@@ -102,7 +101,7 @@ void FillDec(int n, int *A){
     }
 }
 
-long long int CheckSum(const int *arr, int n){
+long CheckSum(const int *arr, int n){
     int i;
     long long int sum=0;
     for(i=0;i<n;i++){
@@ -122,11 +121,12 @@ int RunNumber(int *a, int n){
 }
 
 void PrintSpis(el *p){
-	printf("\n");
-	if((p->next!=NULL) && p!=NULL){
-		do{
-			printf("%d ", p->data);
-			p=p->next;
-		}while(p->next!=NULL);
-	}
+    printf("\n");
+    if(p!=NULL){
+        do{
+            printf("%d ", p->data);
+            p=p->next;
+        }while(p->next!=NULL);
+        printf("%d ", p->data);
+    }
 }
