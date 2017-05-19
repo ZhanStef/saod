@@ -9,7 +9,8 @@ void FillRand(int, int *);
 void PrintMas(int *, int);
 long int CheckSum(const int *, int);
 int RunNumber(int *, int);
-
+void ArrayToList (el *head, int * A, int *CheckSum, int *RunNumber);
+int ListRunNumber(el *head);
 
 typedef struct elements_of_list{
     struct elements_of_list * next;
@@ -28,6 +29,7 @@ int main(){
     srand(time(NULL));
     printf("\nВведите размер последовательности: ");
     scanf("%d", &n);
+    if(n<=0) return 0;
     int *A = (int *)malloc(n*sizeof(int));
 //spisok sluchainix na osnove massiva
     FillRand(n,A);
@@ -36,16 +38,8 @@ int main(){
     printf("\nCheckSum: %ld\n", CheckSum(A,n));
 //zapisb v spisok
     int i;
-    el *p=(el *)malloc(sizeof(el)), *head_list=p, *new;
-    p->data=A[0];
-    p->next=NULL;
-    for(i=1; i<n; i++){
-        new=(el *)malloc(sizeof(el));
-        new->next=p->next;
-        p->next=new;
-        p=new;
-        p->data=A[i];
-    }
+    el *head_list=(el *)malloc(sizeof(el));
+
     PrintSpis(head_list);
     return 0;
 }
@@ -129,4 +123,21 @@ void PrintSpis(el *p){
         }while(p->next!=NULL);
         printf("%d ", p->data);
     }
+}
+
+void ArrayToList (el *head, int * A, int *CheckSum, int *RunNumber){
+    el *p=head; *new;
+    p->data=A[0];
+    p->next=NULL;
+    for(i=1; i<n; i++){
+        new=(el *)malloc(sizeof(el));
+        new->next=p->next;
+        p->next=new;
+        p=new;
+        p->data=A[i];
+    }
+}
+
+int ListRunNumber(el *head){
+    int n;
 }
