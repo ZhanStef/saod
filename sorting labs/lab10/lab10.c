@@ -9,7 +9,7 @@ void FillRand(int, int *);
 long long int CheckSum(const int *, int);
 int RunNumber(int *, int);
 void PrintMas(int *, int);
-void QuickSort(int *A, int L, int R, int *move, int *compare);
+void QuickSort(int *A, int L, int R, int *compare, int *move);
 
 int main()
 {
@@ -73,11 +73,17 @@ int main()
     return 0;
 }
 
-void QuickSort(int *A, int L, int R, int *move, int *compare){
+void QuickSort(int *A, int L, int R, int *compare, int *move){
 	int X=A[L], i=L, j=R, temp;
 	while(i<=j){
-		while(A[i]<X) i++;
-		while(A[j]>X) j--;
+		while(A[i]<X){
+			i++;
+			(*compare)++;
+		}
+		while(A[j]>X){ 
+			j--;
+			(*compare)++;
+		}
 		if(i<=j){
 			(*move)+=3;
 			temp=A[i];
@@ -87,8 +93,8 @@ void QuickSort(int *A, int L, int R, int *move, int *compare){
 			j--;
 		}
 	}
-	if(L<j) QuickSort(A, L, j, move, compare);
-	if(i<R) QuickSort(A, i, R, move, compare);
+	if(L<j) QuickSort(A, L, j, compare, move);
+	if(i<R) QuickSort(A, i, R, compare, move);
 }
 
 void FillRand(int a, int * A){
