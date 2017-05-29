@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -25,7 +25,7 @@ int ListSeries(el *head);
 long CheckSumList(el *p);
 long CheckSumArray(const int *, int);
 void SpisokFree(el *head);
-void MergeSort(el *head);
+void MergeSort(el *S);
 
 int main(){
     int n;
@@ -219,14 +219,51 @@ void SpisokFree(el *head){
     free(del);
 }
 
-void MergeSort( ){
+void MergeSort(el *S ){
+    int p=1;
+    while(p<n){
+        que C[2]={{}
+    }
 
-	}
+    }
 
-void MoveListElemToQueue( ){
-	
+void MergeListsToQueue(el *head1, int n1, el *head2, int n2, que *S){
+    el *a=head1, *b=head2;
+    while(n1!=0 && n2!=0){
+        if(a->data<=b->data){
+            MoveElemFromListHeadToQueueTail(head1, S->tail);
+            n1--;
+        }
+        else{
+            MoveElemFromListHeadToQueueTail(head2, S->tail);
+            n2--;
+        }
+    }
+    while(n1>0){
+        MoveElemFromListHeadToQueueTail(head1, S->tail);
+        n1--;
+    }
+    while(n2>0){
+        MoveElemFromListHeadToQueueTail(head2, S->tail);
+        n2--;
+    }
 }
 
-void Separate( ){
-	
+int Separate(el *head, el *a, el*b){
+    int n=1;
+    *a=head;
+    *b=head->next;
+    el *k=a, *p=b;
+    while(p!=NULL){
+        n++;
+        k->next=p->next;
+        k=p;
+        p=p->next;
+    }
+}
+
+void MoveElemFromListHeadToQueueTail(el *head, el *tail){
+    tail->next=head;
+    tail=head;
+    head=head->next;
 }
