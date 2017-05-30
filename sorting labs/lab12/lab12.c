@@ -52,13 +52,13 @@ int main(){
     PrintSpis(head_list);
     printf("\nSeries: %d", ListSeries(head_list));
     printf("\nCheckSum: %ld\n", CheckSumList(head_list));
-//sorting of spisok    
+//sorting of spisok
     MergeSort(head_list);
-    printf("\nList of rand numbers: ");
+    printf("\nList of sorted be Merge numbers: ");
     PrintSpis(head_list);
     printf("\nSeries: %d", ListSeries(head_list));
     printf("\nCheckSum: %ld\n", CheckSumList(head_list));
-//mem cleaning    
+//mem cleaning
     SpisokFree(head_list);
     head_list=NULL;
 
@@ -230,39 +230,41 @@ void SpisokFree(el *head){
 }
 
 void MergeSort(el *S ){
-	el *a, *b;
-	int n=0, l, r;
-	Separate(S, a, b, &n);
+    el *a=(el *)malloc(sizeof(el*)), *b=(el *)malloc(sizeof(el*));
+    int n=0, l, r;
+    Separate(S, a, b, &n);
     int p=1;
-    que *C[2];
+    que C[2];//=(que *)malloc(sizeof(que*)*2);
+    //C[1].head=(el *)malloc(sizeof(el*));
+    //C[2].head=(el *)malloc(sizeof(el*));
     while(p<n){
-		C[0]->tail=C[0]->head;
-		C[1]->tail=C[1]->head;
-		int i=0;
-		int ts=n;
-		while(ts>0){
-			if(ts>=p){
-				l=p;
-			}
-			else{
-				l=ts;
-			}
-			if(ts>=p){
-				r=p;
-			}
-			else{
-				r=ts;
-			}
-			ts=ts-r;
-			MergeListsToQueue(a, l, b, r, C[i]);
-			i=1-i;
-		}
-		a=C[0]->head;
-		b=C[1]->head;
-		p=2*p;
-	}
-	C[0]->tail->next=NULL;
-	S=C[0]->head;	
+        C[0].tail=C[0].head;
+        C[1].tail=C[1].head;
+        int i=0;
+        int ts=n;
+        while(ts>0){
+            if(ts>=p){
+                l=p;
+            }
+            else{
+                l=ts;
+            }
+            if(ts>=p){
+                r=p;
+            }
+            else{
+                r=ts;
+            }
+            ts=ts-r;
+            MergeListsToQueue(a, l, b, r, &C[i]);
+            i=1-i;
+        }
+        a=C[0].head;
+        b=C[1].head;
+        p=2*p;
+    }
+    C[0].tail->next=NULL;
+    S=C[0].head;
 }
 
 void MergeListsToQueue(el *head1, int n1, el *head2, int n2, que *S){
