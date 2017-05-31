@@ -27,7 +27,7 @@ long CheckSumArray(const int *, int);
 void SpisokFree(el *head);
 void MergeSort(el *S);
 void Separate(el *head, el *a, el*b, int * n);
-void MergeListsToQueue(el *head1, int n1, el *head2, int n2, que *S);
+void MergeListsToQueue(el *head1, int n1, el *head2, int n2, el* tail);
 void MoveElemFromListHeadToQueueTail(el *head, el *tail);
 
 int main(){
@@ -230,13 +230,22 @@ void SpisokFree(el *head){
 }
 
 void MergeSort(el *S ){
-    el *a=(el *)malloc(sizeof(el*)), *b=(el *)malloc(sizeof(el*));
+    el *a=S, *b=S->next;
     int n=0, l, r;
+    PrintSpis(S);
     Separate(S, a, b, &n);
+	printf("\nAfter separate\n");
+	printf("\nAfter separate S:\n");
+	PrintSpis(S);
+	printf("\nAfter separate a:\n");
+    PrintSpis(a);
+    putchar('\n');
+    printf("\nAfter separate b:\n");
+    PrintSpis(b);
     int p=1;
-    que C[2];//=(que *)malloc(sizeof(que*)*2);
-    //C[1].head=(el *)malloc(sizeof(el*));
-    //C[2].head=(el *)malloc(sizeof(el*));
+    que C[2];
+	C[0].tail=C[0].head;
+    C[1].tail=C[1].head;
     while(p<n){
         C[0].tail=C[0].head;
         C[1].tail=C[1].head;
@@ -256,7 +265,7 @@ void MergeSort(el *S ){
                 r=ts;
             }
             ts=ts-r;
-            MergeListsToQueue(a, l, b, r, &C[i]);
+            MergeListsToQueue(a, l, b, r, C[i].tail);
             i=1-i;
         }
         a=C[0].head;
@@ -267,43 +276,48 @@ void MergeSort(el *S ){
     S=C[0].head;
 }
 
-void MergeListsToQueue(el *head1, int n1, el *head2, int n2, que *S){
+void MergeListsToQueue(el *head1, int n1, el *head2, int n2, el *tail){
     el *a=head1, *b=head2;
     while(n1!=0 && n2!=0){
         if(a->data<=b->data){
-            MoveElemFromListHeadToQueueTail(head1, S->tail);
+            MoveElemFromListHeadToQueueTail(head1, tail);
             n1--;
         }
         else{
-            MoveElemFromListHeadToQueueTail(head2, S->tail);
+            MoveElemFromListHeadToQueueTail(head2, tail);
             n2--;
         }
     }
     while(n1>0){
-        MoveElemFromListHeadToQueueTail(head1, S->tail);
+        MoveElemFromListHeadToQueueTail(head1, tail);
         n1--;
     }
     while(n2>0){
-        MoveElemFromListHeadToQueueTail(head2, S->tail);
+        MoveElemFromListHeadToQueueTail(head2, tail);
         n2--;
     }
 }
 
-void Separate(el *head, el *a, el*b, int *n){
-    *n=1;
+void Separate(el *head, el *a, el *b, int *n){
+    *n=1; 
     a=head;
     b=head->next;
     el *k=a, *p=b;
     while(p!=NULL){
-        n++;
+        (*n)++;
         k->next=p->next;
         k=p;
         p=p->next;
     }
+    printf("\nInside func separate\n");
+    PrintSpis(a);
+    putchar('\n');
+    PrintSpis(b);
 }
 
 void MoveElemFromListHeadToQueueTail(el *head, el *tail){
     tail->next=head;
     tail=head;
     head=head->next;
+    //PrintSpis(head);
 }
