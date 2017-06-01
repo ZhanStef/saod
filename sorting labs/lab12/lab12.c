@@ -244,10 +244,10 @@ void MergeSort(el *S ){
     PrintSpis(b);
     int p=1;
     que C[2];
-	C[0].tail=C[0].head;
-    C[1].tail=C[1].head;
+	//C[0].tail=C[0].head;
+    //C[1].tail=C[1].head;
     while(p<n){
-        C[0].tail=C[0].head;
+		C[0].tail=C[0].head;
         C[1].tail=C[1].head;
         int i=0;
         int ts=n;
