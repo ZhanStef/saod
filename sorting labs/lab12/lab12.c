@@ -25,7 +25,7 @@ int ListSeries(el *head);
 long CheckSumList(el *p);
 long CheckSumArray(const int *, int);
 void SpisokFree(el *head);
-void MergeSort(el *S);
+void MergeSort(el **S);
 void Separate(el *head, el *a, el*b, int * n);
 void MergeListsToQueue(el **head1, int n1, el **head2, int n2, el **tail);
 void MoveElemFromListHeadToQueueTail(el **head, el **tail);
@@ -54,7 +54,7 @@ int main(){
     printf("\nSeries: %d", ListSeries(head_list));
     printf("\nCheckSum: %ld\n", CheckSumList(head_list));
 //sorting of spisok
-    MergeSort(head_list);
+    MergeSort(&head_list);
     printf("\nList of sorted be Merge numbers: ");
     PrintSpis(head_list);
     printf("\nSeries: %d", ListSeries(head_list));
@@ -230,30 +230,30 @@ void SpisokFree(el *head){
     free(del);
 }
 
-void MergeSort(el *S ){
-    el *a=S, *b=S->next;
+void MergeSort(el **S ){
+    el *a=*S, *b=(*S)->next;
     int n=0, l, r;
-    PrintSpis(S);
-    Separate(S, a, b, &n);
-    printf("\nN=%d\n", n);
+    //PrintSpis(*S);
+    Separate(*S, a, b, &n);
+    //printf("\nN=%d\n", n);
    // printf("\nAfter separate\n");
    // printf("\nAfter separate S:\n");
-    PrintSpis(S);
-    printf("\nDOWN After separate a: DOWN\n");
-    PrintSpis(a);
-    putchar('\n');
-    printf("\nDOWN After separate b: DOWN\n");
-    PrintSpis(b);
-    printf("\nUP After separate b: UP\n");
+   // PrintSpis(*S);
+    //printf("\nDOWN After separate a: DOWN\n");
+    //PrintSpis(a);
+    //putchar('\n');
+    //printf("\nDOWN After separate b: DOWN\n");
+    //PrintSpis(b);
+    //printf("\nUP After separate b: UP\n");
     int p=1;
     que C[2];
-    //C[0].tail=C[0].head;
-    //C[1].tail=C[1].head;
+    C[0].head=(el *)malloc(sizeof(el));
+    C[1].head=(el *)malloc(sizeof(el));
     while(p<n){
         C[0].tail=(el*)&(C[0].head);
-        printf("\n C[0].tail = %p", C[0].tail);
+        //printf("\n C[0].tail = %p", C[0].tail);
         C[1].tail=(el*)&(C[1].head);
-        printf("\n C[1].tail = %p", C[1].tail);
+        //printf("\n C[1].tail = %p", C[1].tail);
         int i=0;
         int ts=n;
         while(ts>0){
@@ -273,20 +273,20 @@ void MergeSort(el *S ){
             ts=ts-r;
             MergeListsToQueue(&a, l, &b, r, &(C[i].tail));
             i=1-i;
-            printf("\nLeft of ts: %d\n", ts);
+            //printf("\nLeft of ts: %d\n", ts);
         }
-        printf("\n UP !!!! p=%d !!!!!! UP Left inside cicle \n", p);
+        //printf("\n UP !!!! p=%d !!!!!! UP Left inside cicle \n", p);
         a=C[0].head;
-        printf("\n a = %p", a);
-        PrintSpis(a);
+        //printf("\n a = %p", a);
+        //PrintSpis(a);
         b=C[1].head;
-        printf("\n b = %p", b);
-        PrintSpis(b);
+        //printf("\n b = %p", b);
+        //PrintSpis(b);
         p=2*p;
-        printf("\n############# NEW ROUND DOWN p=%d\n", p);
+        //printf("\n############# NEW ROUND DOWN p=%d\n", p);
     }
     C[0].tail->next=NULL;
-    S=C[0].head;
+    *S=C[0].head;
 }
 
 void MergeListsToQueue(el **head1, int n1, el **head2, int n2, el **tail){
@@ -329,11 +329,12 @@ void Separate(el *head, el *a, el *b, int *n){
 }
 
 void MoveElemFromListHeadToQueueTail(el **head, el **tail){
-    printf("\n DVIGAEM: %d\n",(*head)->data);
+    //printf("\n DVIGAEM: %d\n",(*head)->data);
+//    printf("\n Next was: %p Next new %p\n",(*head)->next, (*head));
     (*tail)->next=*head;
     *tail=*head;
     *head=(*head)->next;
-    printf("\nOutput of MoveElem\n");
+    //printf("\nOutput of MoveElem\n");
 //    PrintQue(*head, *tail);
 }
 
